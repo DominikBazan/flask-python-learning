@@ -1,0 +1,11 @@
+remotemysql.com
+IbliKndy1l
+M8ENJ9wmy8
+IbliKndy1l
+3306
+
+Server: remotemysql.com
+Username: IbliKndy1l
+Password: M8ENJ9wmy8
+Database name: IbliKndy1l
+Port: 3306
