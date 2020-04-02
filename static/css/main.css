@@ -5,8 +5,13 @@ body, html {
 }
 
 .content {
-    margin: 0 auto;
+    /* margin: 0 auto; */
     /* width: 400px; */
+}
+
+.margin-top {
+    margin-top: 73px;
+    margin-left: 15px;
 }
 
 table, td, th {
@@ -14,7 +19,7 @@ table, td, th {
 }
 
 table {
-    margin-top: 24px;
+    margin-top: 73px;
     /* border-collapse: collapse; */
     border: solid 3px #aaa;
     width: 100%;
