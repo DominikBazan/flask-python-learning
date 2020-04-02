@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block head %}
+<title>Todo list</title>
+{% endblock %}
+
+{% block body %}
+<div id="content">
+    <h1>Todos:</h1>
+    {% if todos|length < 1 %}
+    <h5>There are no todos created. Create one down below.</h5>
+    {% else %}
+    <table>
+        <tr>
+            <th>Task</th>
+            <th>Actions</th>
+        </tr>
+        {% for todo in todos %}
+            <tr>
+                <td>
+                    {{todo}}
+                </td>
+                <td>
+                    <a href="/delete/{{todo}}">Delete</a>
+                    <a href="/update/{{todo}}">Update</a>
+                </td>
+            </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+
+    <form action="/" method="POST" id="form">
+        <input type="text" name="content" id="content">
+        <input type="submit" value="Add todo">
+    </form>
+</div>
+{% endblock %}
