@@ -21,6 +21,7 @@ def index():
 
 @app.route('/delete/<string:value>')
 def delete(value):
+    print(">XXXX<")
     db = dbConnection()
     try:
         todoDelete(db, value)

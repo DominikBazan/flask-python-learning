@@ -4,11 +4,13 @@
 <title>Todo list</title>
 {% endblock %}
 
+{% block content %}
+
 {% block body %}
 <div id="content">
     <h1>Todos:</h1>
     {% if todos|length < 1 %}
-    <h5>There are no todos created. Create one down below.</h5>
+    <div id="empty-case">There are no todos created. Create one down below.</div>
     {% else %}
     <table>
         <tr>
@@ -21,17 +23,20 @@
                     {{todo}}
                 </td>
                 <td>
-                    <a href="/delete/{{todo}}">Delete</a>
-                    <a href="/update/{{todo}}">Update</a>
+                    <a class="btn btn-danger" href="/delete/{{todo}}" role="button">Delete</a>
+                    <a class="btn btn-warning" href="/update/{{todo}}" role="button">Update</a>
                 </td>
             </tr>
         {% endfor %}
     </table>
     {% endif %}
 
-    <form action="/" method="POST" id="form">
+    <!-- <form action="/" method="POST" id="form">
         <input type="text" name="content" id="content">
         <input type="submit" value="Add todo">
-    </form>
+    </form> -->
+    
 </div>
+{% endblock %}
+
 {% endblock %}
