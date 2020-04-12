@@ -4,12 +4,13 @@
 <title>Todo list</title>
 {% endblock %}
 
-{% block content %}
-
 {% block body %}
+
+{% if session['login'] %}
+
 <div id="content">
     {% if todos|length < 1 %}
-    <div id="empty-case">There are no todos created. Create one down below.</div>
+    <div class="margin-under-nav" id="empty-case">There are no todos created. Create one.</div>
     {% else %}
     <table>
         <tr>
@@ -29,13 +30,12 @@
         {% endfor %}
     </table>
     {% endif %}
-
-    <!-- <form action="/" method="POST" id="form">
-        <input type="text" name="content" id="content">
-        <input type="submit" value="Add todo">
-    </form> -->
-    
 </div>
-{% endblock %}
+
+{% else %}
+<div class="margin-under-nav">
+    <h1>You are not loged in</h1>
+</div>
+{% endif %}
 
 {% endblock %}
