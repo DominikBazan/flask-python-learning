@@ -16,6 +16,8 @@ app.config['MYSQL_HOST'] = 'remotemysql.com'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
+app.secret_key = 'secret363o3837490483893847894'
+    
 # login_manager = LoginManager()
 # login_manager.init_app(app)
 
@@ -109,6 +111,6 @@ def update(value):
 if __name__ == "__main__":
     # app.secret_key = "748fdmf**jnxhdelndf"
     # app.config['SESSION_TYPE'] = 'memcached'
-    app.secret_key = 'secret363o3837490483893847894'
+    # app.secret_key = 'secret363o3837490483893847894'
     app.run(debug=True)
     
