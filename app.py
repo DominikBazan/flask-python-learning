@@ -108,7 +108,7 @@ def update(value):
 
 if __name__ == "__main__":
     # app.secret_key = "748fdmf**jnxhdelndf"
-    app.config['SESSION_TYPE'] = 'memcached'
-    app.config['SECRET_KEY'] = '748fdmf**jnxhdelndf'
+    # app.config['SESSION_TYPE'] = 'memcached'
+    app.secret_key = 'secret363o3837490483893847894'
     app.run(debug=True)
     
