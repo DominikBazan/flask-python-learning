@@ -1,11 +1,8 @@
+import bcrypt
 from flask import Flask, render_template, url_for, request, redirect, session
-from database import dbConnection, truncateTableNamed, printTableNamed
 from todos import todoInsert, getTodos, todoDelete, todoUpdate
 from flask_mysqldb import MySQL, MySQLdb
-import bcrypt
 from tech import v2Q
-
-# from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 
 app = Flask(__name__)
 app.config['MYSQL_HOST'] = 'remotemysql.com'
@@ -16,31 +13,23 @@ app.config['MYSQL_HOST'] = 'remotemysql.com'
 app.config['MYSQL_CURSORCLASS'] = 'DictCursor'
 mysql = MySQL(app)
 
-app.secret_key = 'secret363o3837490483893847894'
-    
-# login_manager = LoginManager()
-# login_manager.init_app(app)
-
-# @login_manager.user_loader
-# def load_user(user_id):
-#     return  User.query.get(int(user_id))
+app.secret_key = '748fdmf**jnxhdelndf'
 
 @app.route('/', methods=['POST', 'GET'])
 def index():
     if not session.get('login'):
         return redirect('/login')
     else:
-        db = dbConnection()
         if request.method == 'POST':
             value = request.form['new-todo']
             try:
                 if value:
-                    todoInsert(db, value)
+                    todoInsert(value, mysql)
                 return redirect('/')
             except:
                 return "SQL Error"
         else:
-            todos = getTodos(db)
+            todos = getTodos(mysql)
             return render_template('index.html', todos=todos)
 
 @app.route('/register', methods=["GET", "POST"])
@@ -51,12 +40,14 @@ def register():
         login = request.form['login']
         password = request.form['password'].encode('utf-8')
         hash_password = bcrypt.hashpw(password, bcrypt.gensalt())
-        # print("XXXXXXXXXXXXXXXXX:")
-        # print(hash_password)
         cur = mysql.connection.cursor()
         cur.execute("INSERT INTO users (login, pass) VALUES (%s,%s)",(login,hash_password,))
         mysql.connection.commit()
+        cur.execute("SELECT * FROM users WHERE login=%s",(login,))
+        user = cur.fetchone()
+        cur.close()
         session['login'] = login
+        session['id_user'] = user['id_user']
         return redirect('/')
 
 @app.route('/login', methods=["GET", "POST"])
@@ -64,15 +55,14 @@ def login():
     if request.method == "POST":
         login = request.form["login"]
         password = request.form['password'].encode('utf-8')
-
         cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
         cur.execute("SELECT * FROM users WHERE login=%s",(login,))
         user = cur.fetchone()
         cur.close()
- 
         if user:
             if bcrypt.checkpw(password, user['pass'].encode('utf-8')):
                 session['login'] = user['login']
+                session['id_user'] = user['id_user']
                 return redirect("/")
             else:
                 return redirect('/login')
@@ -88,9 +78,8 @@ def logout():
 
 @app.route('/delete/<string:value>')
 def delete(value):
-    db = dbConnection()
     try:
-        todoDelete(db, value)
+        todoDelete(value, mysql)
         return redirect('/')
     except:
         return 'SQL Error'
@@ -99,18 +88,14 @@ def delete(value):
 def update(value):
     if request.method == 'POST':
         try:
-            db = dbConnection()
             new = request.form['content']
-            todoUpdate(db, value, new)
+            todoUpdate(value, new, mysql)
             return redirect('/')
         except:
             return 'SQL Error (update)'
     else:
-        return render_template('update.html', todo=value)
+        return render_template('update.html', old=value)
 
 if __name__ == "__main__":
-    # app.secret_key = "748fdmf**jnxhdelndf"
-    # app.config['SESSION_TYPE'] = 'memcached'
-    # app.secret_key = 'secret363o3837490483893847894'
     app.run(debug=True)
     

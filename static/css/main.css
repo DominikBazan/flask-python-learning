@@ -2,22 +2,15 @@ body, html {
     font-family: sans-serif;
 }
 
-.margin-top {
-    margin-top: 73px;
-    margin-left: 15px;
-}
-
 table, td, th {
     border: 2px solid #aaa;
 }
 
-table {
+#todos-table {
     margin-top: 73px;
     border: solid 3px #aaa;
     width: 100%;
 }
-
-/* th {} */
 
 td {
     text-align: center;

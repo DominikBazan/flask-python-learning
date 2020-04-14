@@ -5,10 +5,10 @@
 {% endblock %}
 
 {% block body %}
-<div class="content margin-top">
+<div class="content margin-under-nav">
     <h1>Updating</h1>
-    <form action="/update/{{todo}}" method="POST" id="form">
-        <input type="text" name="content" id="content" value="{{todo}}">
+    <form action="/update/{{old}}" method="POST" id="form">
+        <input type="text" name="content" id="content" value="{{old}}">
         <input type="submit" value="Update todo">
     </form>
 </div>

@@ -1,36 +1,36 @@
-# from random import randrange
-# from datetime import timedelta
 from tech import v2Q
+from flask import session
+from flask_mysqldb import MySQL, MySQLdb
 
-
-def todoInsert(db, value):
-    cursor = db.cursor()
-    query = "INSERT into todos (value) VALUES ("+ v2Q(value) +")"
-    cursor.execute(query)
-    db.commit()
-    cursor.close()
-
-def getTodos(db):
-    cursor = db.cursor()
-    query = "SELECT value FROM todos"
-    cursor.execute(query)
+def todoInsert(value, mysql):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    query = "INSERT INTO todos (id_user, value) VALUES (%s,%s)" % (session['id_user'],v2Q(value))
+    cur.execute(query)
+    mysql.connection.commit()
+    cur.close()
+    
+def getTodos(mysql):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    query = "SELECT value FROM todos WHERE id_user=%s" % (session['id_user'])
+    cur.execute(query)
     todosList = []
-    for (value) in cursor:
-        todosList.append(value[0])
-    cursor.close()
+    for (value) in cur:
+        todosList.append(value['value'])
+    mysql.connection.commit()
+    cur.close()
 
     return todosList
 
-def todoDelete(db, value):
-    cursor = db.cursor()
-    query = "DELETE FROM todos WHERE value = " + v2Q(value)
-    cursor.execute(query)
-    db.commit()
-    cursor.close()
+def todoDelete(value, mysql):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    query = "DELETE FROM todos WHERE value=%s AND id_user=%s;" % (v2Q(value),session['id_user'])
+    cur.execute(query)
+    mysql.connection.commit()
+    cur.close()
 
-def todoUpdate(db, old, new):
-    cursor = db.cursor()
-    query = "UPDATE todos SET value=" + v2Q(new) + " WHERE value=" + v2Q(old)
-    cursor.execute(query)
-    db.commit()
-    cursor.close()
+def todoUpdate(old, new, mysql):
+    cur = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    query = "UPDATE todos SET value=%s WHERE value=%s AND id_user=%s" % (v2Q(new),v2Q(old),session['id_user'])
+    cur.execute(query)
+    mysql.connection.commit()
+    cur.close()
