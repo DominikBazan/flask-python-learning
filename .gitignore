@@ -1,5 +1,4 @@
 sql_scripts/
 instructionOfSetup.txt
-.vscode
-__pycache__
-.gitignore
+.vscode/
+__pycache__/
